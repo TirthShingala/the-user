@@ -12,7 +12,7 @@ import (
 func Authenticate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("Authorization")
-		println(token)
+
 		if token == "" {
 			ctx.JSON(http.StatusUnauthorized, responses.ErrorResponse{
 				Success: false,

@@ -115,7 +115,7 @@ func Signup() gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, responses.AuthResponse{
+		ctx.JSON(http.StatusCreated, responses.AuthResponse{
 			Success:      true,
 			Message:      "user created successfully",
 			FirstName:    user.FirstName,

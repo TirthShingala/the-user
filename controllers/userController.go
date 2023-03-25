@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/TirthShingala/the-user/constants"
 	helper "github.com/TirthShingala/the-user/helpers"
@@ -11,18 +12,69 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func GetUsers() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if err := helper.CheckUserType(ctx, constants.AdminRole); err != nil {
+		if authErr := helper.CheckUserType(ctx, constants.AdminRole); authErr != nil {
 			ctx.JSON(http.StatusUnauthorized, responses.ErrorResponse{
 				Success: false,
-				Message: err.Error(),
+				Message: authErr.Error(),
 			})
 			return
 		}
 
+		limitQuery := ctx.Query("limit")
+		pageQuery := ctx.Query("page")
+
+		limit, _ := strconv.ParseInt(limitQuery, 0, 64)
+		page, _ := strconv.ParseInt(pageQuery, 0, 64)
+		if limit == 0 {
+			limit = 20
+		}
+		if limit > 50 {
+			limit = 50
+		}
+
+		skip := int64(page * limit)
+		fOpt := options.FindOptions{Limit: &limit, Skip: &skip}
+
+		curr, err := models.UserCollection.Find(ctx, bson.M{}, &fOpt)
+		if err != nil {
+			log.Panic(err.Error())
+			ctx.JSON(http.StatusInternalServerError, responses.ErrorResponse{
+				Success: false,
+				Message: "something isn't working!",
+			})
+			return
+		}
+
+		users := make([]responses.AdminUserResponse, 0)
+
+		for curr.Next(ctx) {
+			var user responses.AdminUserResponse
+			if err := curr.Decode(&user); err != nil {
+				log.Println(err)
+			}
+			users = append(users, user)
+		}
+
+		count, _ := models.UserCollection.CountDocuments(ctx, bson.M{})
+
+		metaData := responses.PaginationMetaData{
+			Page:       page,
+			PerPage:    limit,
+			PageCount:  count / limit,
+			TotalCount: count,
+		}
+
+		ctx.JSON(http.StatusOK, responses.PaginationResponse{
+			Success:  true,
+			Message:  "users fetched successfully",
+			MetaData: metaData,
+			Data:     users,
+		})
 	}
 }
 
@@ -43,7 +95,7 @@ func GetUser() gin.HandlerFunc {
 
 		ctx.JSON(http.StatusOK, responses.UserResponse{
 			Success:   true,
-			Message:   "user data found successfully",
+			Message:   "profile data found successfully",
 			FirstName: user.FirstName,
 			LastName:  user.LastName,
 			Email:     user.Email,
