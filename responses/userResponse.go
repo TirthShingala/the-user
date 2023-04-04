@@ -55,3 +55,10 @@ type PaginationResponse struct {
 	MetaData PaginationMetaData  `json:"metaData"`
 	Data     []AdminUserResponse `json:"data"`
 }
+
+type SignedUrlResponse struct {
+	Success      bool   `json:"success"`
+	Message      string `json:"message"`
+	SignedPutUrl string `json:"signedPutUrl"`
+	Url          string `json:"url"`
+}

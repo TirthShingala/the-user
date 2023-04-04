@@ -105,3 +105,56 @@ func GetUser() gin.HandlerFunc {
 		})
 	}
 }
+
+type uploadUrlReq struct {
+	ContentLength int64
+	Extension     string
+}
+
+func UploadURL() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		email := ctx.GetString("email")
+
+		var req uploadUrlReq
+		if err := ctx.BindJSON(&req); err != nil {
+			log.Println(err.Error())
+			ctx.JSON(http.StatusBadRequest, responses.ErrorResponse{
+				Success: false,
+				Message: "invalid json!",
+			})
+			return
+		}
+
+		if req.ContentLength > 5242880 {
+			ctx.JSON(http.StatusBadRequest, responses.ErrorResponse{
+				Success: false,
+				Message: "file greater than 5MB is not allowed!",
+			})
+			return
+		}
+
+		var user models.User
+		err := models.UserCollection.FindOne(ctx, bson.M{"email": email}).Decode(&user)
+		if err != nil {
+			log.Panic(err.Error())
+			ctx.JSON(http.StatusInternalServerError, responses.ErrorResponse{
+				Success: false,
+				Message: "something isn't working!",
+			})
+			return
+		}
+
+		key := "profile/" + user.ID.Hex() + "." + req.Extension
+
+		signedPutUrl := helper.SignedURL(&key, &req.ContentLength)
+
+		getUrl := constants.CDN_BASE_URL + "/" + key
+
+		ctx.JSON(http.StatusOK, responses.SignedUrlResponse{
+			Success:      true,
+			Message:      "signed url created successfully",
+			SignedPutUrl: signedPutUrl,
+			Url:          getUrl,
+		})
+	}
+}
