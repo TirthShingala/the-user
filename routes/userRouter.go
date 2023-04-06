@@ -13,4 +13,5 @@ func UserRoutes(routes *gin.Engine) {
 
 	userRoutes.GET("/", controller.GetUsers())
 	userRoutes.GET("/profile", controller.GetUser())
+	userRoutes.POST("/profile/upload-url", controller.UploadURL())
 }

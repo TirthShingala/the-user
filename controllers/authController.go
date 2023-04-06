@@ -196,16 +196,17 @@ func Login() gin.HandlerFunc {
 		token, refreshToken, _ := helper.GenerateAllTokens(user.Email, user.Role)
 
 		ctx.JSON(http.StatusOK, responses.AuthResponse{
-			Success:      true,
-			Message:      "user logged in successfully",
-			FirstName:    user.FirstName,
-			LastName:     user.LastName,
-			Email:        user.Email,
-			Phone:        user.Phone,
-			Role:         user.Role,
-			IsBlocked:    user.IsBlocked,
-			Token:        token,
-			RefreshToken: refreshToken,
+			Success:       true,
+			Message:       "user logged in successfully",
+			FirstName:     user.FirstName,
+			LastName:      user.LastName,
+			Email:         user.Email,
+			Phone:         user.Phone,
+			Role:          user.Role,
+			IsBlocked:     user.IsBlocked,
+			ProfilePicUrl: user.ProfilePicUrl,
+			Token:         token,
+			RefreshToken:  refreshToken,
 		})
 	}
 }
@@ -267,15 +268,16 @@ func Token() gin.HandlerFunc {
 		newtoken, _ := helper.GenerateAccessTokens(user.Email, user.Role)
 
 		ctx.JSON(http.StatusOK, responses.AuthResponse{
-			Success:   true,
-			Message:   "new access token generated successfully",
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			Email:     user.Email,
-			Phone:     user.Phone,
-			Role:      user.Role,
-			IsBlocked: user.IsBlocked,
-			Token:     newtoken,
+			Success:       true,
+			Message:       "new access token generated successfully",
+			FirstName:     user.FirstName,
+			LastName:      user.LastName,
+			Email:         user.Email,
+			Phone:         user.Phone,
+			Role:          user.Role,
+			IsBlocked:     user.IsBlocked,
+			ProfilePicUrl: user.ProfilePicUrl,
+			Token:         newtoken,
 		})
 	}
 }
