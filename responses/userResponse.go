@@ -7,39 +7,42 @@ import (
 )
 
 type AuthResponse struct {
-	Success      bool   `json:"success"`
-	Message      string `json:"message"`
-	FirstName    string `json:"firstName"`
-	LastName     string `json:"lastName"`
-	Email        string `json:"email"`
-	Phone        string `json:"phone"`
-	Role         string `json:"role"`
-	IsBlocked    bool   `json:"isBlocked"`
-	Token        string `json:"token"`
-	RefreshToken string `json:"refreshToken"`
+	Success       bool   `json:"success"`
+	Message       string `json:"message"`
+	FirstName     string `json:"firstName"`
+	LastName      string `json:"lastName"`
+	Email         string `json:"email"`
+	Phone         string `json:"phone"`
+	Role          string `json:"role"`
+	IsBlocked     bool   `json:"isBlocked"`
+	ProfilePicUrl string `json:"profilePicUrl"`
+	Token         string `json:"token"`
+	RefreshToken  string `json:"refreshToken"`
 }
 
 type UserResponse struct {
-	Success   bool   `json:"success"`
-	Message   string `json:"message"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`
-	Role      string `json:"role"`
-	IsBlocked bool   `json:"isBlocked"`
+	Success       bool   `json:"success"`
+	Message       string `json:"message"`
+	FirstName     string `json:"firstName"`
+	LastName      string `json:"lastName"`
+	Email         string `json:"email"`
+	Phone         string `json:"phone"`
+	Role          string `json:"role"`
+	IsBlocked     bool   `json:"isBlocked"`
+	ProfilePicUrl string `json:"profilePicUrl"`
 }
 
 type AdminUserResponse struct {
-	ID        primitive.ObjectID `json:"id" bson:"_id"`
-	FirstName string             `json:"firstName"`
-	LastName  string             `json:"lastName"`
-	Email     string             `json:"email"`
-	Phone     string             `json:"phone"`
-	Role      string             `json:"role"`
-	IsBlocked bool               `json:"isBlocked"`
-	CreatedAt time.Time          `json:"createdAt"`
-	UpdatedAt time.Time          `json:"updatedAt"`
+	ID            primitive.ObjectID `json:"id" bson:"_id"`
+	FirstName     string             `json:"firstName"`
+	LastName      string             `json:"lastName"`
+	Email         string             `json:"email"`
+	Phone         string             `json:"phone"`
+	Role          string             `json:"role"`
+	IsBlocked     bool               `json:"isBlocked"`
+	CreatedAt     time.Time          `json:"createdAt"`
+	UpdatedAt     time.Time          `json:"updatedAt"`
+	ProfilePicUrl string             `json:"profilePicUrl"`
 }
 
 type PaginationMetaData struct {
@@ -57,8 +60,8 @@ type PaginationResponse struct {
 }
 
 type SignedUrlResponse struct {
-	Success      bool   `json:"success"`
-	Message      string `json:"message"`
-	SignedPutUrl string `json:"signedPutUrl"`
-	Url          string `json:"url"`
+	Success       bool   `json:"success"`
+	Message       string `json:"message"`
+	SignedPutUrl  string `json:"signedPutUrl"`
+	ProfilePicUrl string `json:"profilePicUrl"`
 }

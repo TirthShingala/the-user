@@ -94,14 +94,15 @@ func GetUser() gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, responses.UserResponse{
-			Success:   true,
-			Message:   "profile data found successfully",
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			Email:     user.Email,
-			Phone:     user.Phone,
-			Role:      user.Role,
-			IsBlocked: user.IsBlocked,
+			Success:       true,
+			Message:       "profile data found successfully",
+			FirstName:     user.FirstName,
+			LastName:      user.LastName,
+			Email:         user.Email,
+			Phone:         user.Phone,
+			Role:          user.Role,
+			ProfilePicUrl: user.ProfilePicUrl,
+			IsBlocked:     user.IsBlocked,
 		})
 	}
 }
@@ -150,11 +151,22 @@ func UploadURL() gin.HandlerFunc {
 
 		getUrl := constants.CDN_BASE_URL + "/" + key
 
+		e, err := models.UserCollection.UpdateOne(ctx, bson.M{"_id": user.ID}, bson.M{"$set": bson.M{"profilePicUrl": getUrl}})
+		println(e)
+		if err != nil {
+			log.Panic(err.Error())
+			ctx.JSON(http.StatusInternalServerError, responses.ErrorResponse{
+				Success: false,
+				Message: "something isn't working!",
+			})
+			return
+		}
+
 		ctx.JSON(http.StatusOK, responses.SignedUrlResponse{
-			Success:      true,
-			Message:      "signed url created successfully",
-			SignedPutUrl: signedPutUrl,
-			Url:          getUrl,
+			Success:       true,
+			Message:       "signed url created successfully",
+			SignedPutUrl:  signedPutUrl,
+			ProfilePicUrl: getUrl,
 		})
 	}
 }
