@@ -10,5 +10,6 @@ func AuthRoutes(routes *gin.Engine) {
 
 	authRoutes.POST("/signup", controller.Signup())
 	authRoutes.POST("/login", controller.Login())
+	authRoutes.POST("/google", controller.Google())
 	authRoutes.GET("/token", controller.Token())
 }
