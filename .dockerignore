@@ -1,0 +1,13 @@
+# common
+README.md
+docker-compose.yml
+Dockerfile
+
+# git
+.git
+.gitattributes
+.gitignore
+
+# env
+.env
+.env.example
