@@ -19,7 +19,7 @@ This is a RESTful API built with Golang and Gin web framework, using MongoDB as 
 | Method | Endpoint                   | Description                                     |
 | ------ | -------------------------- | ----------------------------------------------- |
 | POST   | `/auth/signup`             | Create a new user                               |
-| POST   | `/auth/login`              | a user and receive a JWT                        |
+| POST   | `/auth/login`              | Authenticate a user and receive a JWT           |
 | POST   | `/auth/google`             | Google OAuth login/signup                       |
 | GET    | `/auth/token`              | Get new access token using refresh token        |
 | GET    | `/user`                    | Admin route to get all users information        |
