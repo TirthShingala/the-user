@@ -23,8 +23,8 @@ This is a RESTful API built with Golang and Gin web framework, using MongoDB as 
 | POST   | `/auth/google`             | Google OAuth login/signup                       |
 | GET    | `/auth/token`              | Get new access token using refresh token        |
 | GET    | `/user`                    | Admin route to get all users information        |
-| PUT    | `/user/profile`            | Get a user's information                        |
-| GET    | `/user/profile/upload-url` | Get a presigned URL to upload a profile picture |
+| GET    | `/user/profile`            | Get a user's information                        |
+| POST   | `/user/profile/upload-url` | Get a presigned URL to upload a profile picture |
 
 ## Authentication
 
